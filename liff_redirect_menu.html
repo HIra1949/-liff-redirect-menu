@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>LIFF 自動メッセージ & 遷移</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+<script>
+  const redirectUrl = "https://cal-rent.net/pitweb/item_select.php?fc_code=0048&tenpo_code=0001";
+
+  window.onload = function () {
+    liff.init({ liffId: "YOUR_LIFF_ID" }) // ← 実際のLIFF IDに置き換えてください
+      .then(() => {
+        if (!liff.isLoggedIn()) {
+          liff.login();
+        } else {
+          liff.sendMessages([
+            {
+              type: "text",
+              text: "メニュー"
+            }
+          ])
+          .then(() => {
+            window.location.href = redirectUrl;
+          })
+          .catch((err) => {
+            console.error("メッセージ送信失敗:", err);
+          });
+        }
+      })
+      .catch((err) => {
+        console.error("LIFF初期化失敗:", err);
+      });
+  }
+</script>
+</body>
+</html>
